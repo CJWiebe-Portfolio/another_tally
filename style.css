@@ -209,3 +209,45 @@ h1 {
   background: var(--blood);
   color: var(--paper);
 }
+.actions button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.actions button:disabled:hover {
+  background: none;
+  color: var(--ink);
+}
+.actions button.last:disabled:hover {
+  color: var(--blood);
+}
+
+.account-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+.account-bar #player-name {
+  font-family: "Caveat", cursive;
+  font-size: 16px;
+  color: var(--ink);
+}
+.account-bar button {
+  font-family: "Special Elite", monospace;
+  font-size: 11px;
+  background: none;
+  border: 1px solid var(--ink-soft);
+  color: var(--ink-soft);
+  padding: 4px 10px;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.account-bar button:hover {
+  background: var(--ink-soft);
+  color: var(--paper);
+}
