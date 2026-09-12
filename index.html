@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HUD Mockup — Survivor's Journal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Special+Elite&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="page">
+      <div class="tape t1"></div>
+      <div class="tape t2"></div>
+      <h1>Day Eleven.</h1>
+      <div class="subhead">Written by lamplight — generator's almost out</div>
+
+      <div class="cols">
+        <div>
+          <div class="section-title">What's left</div>
+          <div class="ledger-line">
+            <span>Food</span><span class="marks">|||| ||</span>
+          </div>
+          <div class="ledger-line">
+            <span>Clean water</span><span class="marks">|||</span>
+          </div>
+          <div class="ledger-line">
+            <span>Bandages</span><span class="marks">||</span>
+          </div>
+          <div class="ledger-line">
+            <span>Nails & wood</span><span class="marks">|||| |||| |</span>
+          </div>
+          <div class="ledger-line">
+            <span>Shells for the shotgun</span
+            ><span class="marks" style="color: var(--blood)">|</span>
+          </div>
+
+          <div class="section-title" style="margin-top: 22px">
+            Who's still here
+          </div>
+          <div class="roster-item">
+            <span>Marquez</span><span class="note">gone scavenging</span>
+          </div>
+          <div class="roster-item">
+            <span>Okafor</span><span class="note">asleep, finally</span>
+          </div>
+          <div class="roster-item">
+            <span>Reyes</span
+            ><span class="note" style="color: var(--blood)">fever's worse</span>
+          </div>
+
+          <div class="stamp">HOLD THE LINE</div>
+        </div>
+
+        <div>
+          <div class="section-title">Notes to self</div>
+          <div class="diary-entry">
+            <span class="date">9:40pm</span>Heard them at the fence again. Moss
+            says the west wall won't take another night like the last one.
+          </div>
+          <div class="diary-entry">
+            <span class="date">7:15pm</span>Marquez brought back tinned peaches
+            and a working radio. No signal yet. Still — a radio.
+          </div>
+          <div class="diary-entry">
+            <span class="date">4:00pm</span>Reyes won't eat. Told her it's the
+            fever talking. I don't think either of us believed it.
+          </div>
+          <div class="diary-entry">
+            <span class="date">Dawn</span>Eleven days. Somehow that number feels
+            bigger than the ones before it.
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button>Send someone out</button>
+        <button>Patch the wall</button>
+        <button>Let them rest</button>
+        <button class="last">Brace for the night</button>
+      </div>
+    </div>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+      import {
+        getAuth,
+        GoogleAuthProvider,
+        signInWithPopup,
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+      import {
+        getFirestore,
+        doc,
+        setDoc,
+        getDoc,
+      } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSy...",
+        authDomain: "zombie-journal.firebaseapp.com",
+        projectId: "zombie-journal",
+        storageBucket: "zombie-journal.appspot.com",
+        messagingSenderId: "123456789",
+        appId: "1:123456789:web:abc123",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      const provider = new GoogleAuthProvider();
+
+      // --- Sign in / out ---
+      document.getElementById("login-btn").addEventListener("click", () => {
+        signInWithPopup(auth, provider).catch((err) => {
+          console.error("Sign-in failed:", err.code, err.message);
+          alert("Sign-in failed — check console for details.");
+        });
+      });
+
+      document.getElementById("logout-btn").addEventListener("click", () => {
+        signOut(auth);
+      });
+
+      // --- React to sign-in state ---
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          document.getElementById("login-btn").style.display = "none";
+          document.getElementById("logout-btn").style.display = "inline-block";
+          document.getElementById("player-name").textContent = user.displayName;
+          await loadGameState(user.uid);
+        } else {
+          document.getElementById("login-btn").style.display = "inline-block";
+          document.getElementById("logout-btn").style.display = "none";
+          document.getElementById("player-name").textContent = "";
+        }
+      });
+
+      // --- Save / load ---
+      async function saveGameState(uid, state) {
+        try {
+          await setDoc(doc(db, "saves", uid), state);
+          console.log("Saved.");
+        } catch (err) {
+          console.error("Save failed:", err);
+        }
+      }
+
+      async function loadGameState(uid) {
+        const snap = await getDoc(doc(db, "saves", uid));
+        if (snap.exists()) {
+          applyGameState(snap.data()); // you write this: puts data back into your UI
+        } else {
+          startNewGame(); // you write this: sets default day-1 state
+        }
+      }
+
+      // Expose so your existing game.js can call these
+      window.saveGameState = saveGameState;
+      window.getCurrentUser = () => auth.currentUser;
+    </script>
+  </body>
+</html>
