@@ -8,69 +8,49 @@
       href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Special+Elite&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="page">
       <div class="tape t1"></div>
       <div class="tape t2"></div>
-
-      <div class="account-bar">
-        <span id="player-name"></span>
-        <button id="login-btn">Sign in with Google</button>
-        <button id="logout-btn" style="display: none">Sign out</button>
-      </div>
-
-      <h1 id="day-heading">Day Eleven.</h1>
+      <h1>Day Eleven.</h1>
       <div class="subhead">Written by lamplight — generator's almost out</div>
+      <button id="login-btn">Sign in with Google</button>
+      <button id="logout-btn" style="display: none">Sign out</button>
+      <span id="player-name"></span>
 
       <div class="cols">
         <div>
           <div class="section-title">What's left</div>
           <div class="ledger-line">
-            <span>Food</span><span id="food-marks" class="marks">|||| ||</span>
+            <span>Food</span><span class="marks">|||| ||</span>
           </div>
           <div class="ledger-line">
-            <span>Clean water</span
-            ><span id="water-marks" class="marks">|||</span>
+            <span>Clean water</span><span class="marks">|||</span>
           </div>
           <div class="ledger-line">
-            <span>Bandages</span
-            ><span id="bandages-marks" class="marks">||</span>
+            <span>Bandages</span><span class="marks">||</span>
           </div>
           <div class="ledger-line">
-            <span>Nails & wood</span
-            ><span id="materials-marks" class="marks">|||| |||| |</span>
+            <span>Nails & wood</span><span class="marks">|||| |||| |</span>
           </div>
           <div class="ledger-line">
             <span>Shells for the shotgun</span
-            ><span
-              id="shells-marks"
-              class="marks"
-              style="color: var(--blood)"
-              >|</span
-            >
+            ><span class="marks" style="color: var(--blood)">|</span>
           </div>
 
           <div class="section-title" style="margin-top: 22px">
             Who's still here
           </div>
           <div class="roster-item">
-            <span>Marquez</span
-            ><span id="marquez-note" class="note">gone scavenging</span>
+            <span>Marquez</span><span class="note">gone scavenging</span>
           </div>
           <div class="roster-item">
-            <span>Okafor</span
-            ><span id="okafor-note" class="note">asleep, finally</span>
+            <span>Okafor</span><span class="note">asleep, finally</span>
           </div>
           <div class="roster-item">
             <span>Reyes</span
-            ><span
-              id="reyes-note"
-              class="note"
-              style="color: var(--blood)"
-              >fever's worse</span
-            >
+            ><span class="note" style="color: var(--blood)">fever's worse</span>
           </div>
 
           <div class="stamp">HOLD THE LINE</div>
@@ -78,37 +58,32 @@
 
         <div>
           <div class="section-title">Notes to self</div>
-          <div id="diary-list">
-            <div class="diary-entry">
-              <span class="date">9:40pm</span>Heard them at the fence again.
-              Moss says the west wall won't take another night like the last
-              one.
-            </div>
-            <div class="diary-entry">
-              <span class="date">7:15pm</span>Marquez brought back tinned
-              peaches and a working radio. No signal yet. Still — a radio.
-            </div>
-            <div class="diary-entry">
-              <span class="date">4:00pm</span>Reyes won't eat. Told her it's
-              the fever talking. I don't think either of us believed it.
-            </div>
-            <div class="diary-entry">
-              <span class="date">Dawn</span>Eleven days. Somehow that number
-              feels bigger than the ones before it.
-            </div>
+          <div class="diary-entry">
+            <span class="date">9:40pm</span>Heard them at the fence again. Moss
+            says the west wall won't take another night like the last one.
+          </div>
+          <div class="diary-entry">
+            <span class="date">7:15pm</span>Marquez brought back tinned peaches
+            and a working radio. No signal yet. Still — a radio.
+          </div>
+          <div class="diary-entry">
+            <span class="date">4:00pm</span>Reyes won't eat. Told her it's the
+            fever talking. I don't think either of us believed it.
+          </div>
+          <div class="diary-entry">
+            <span class="date">Dawn</span>Eleven days. Somehow that number feels
+            bigger than the ones before it.
           </div>
         </div>
       </div>
 
       <div class="actions">
-        <button id="btn-send">Send someone out</button>
-        <button id="btn-patch">Patch the wall</button>
-        <button id="btn-rest">Let them rest</button>
-        <button id="btn-brace" class="last">Brace for the night</button>
+        <button>Send someone out</button>
+        <button>Patch the wall</button>
+        <button>Let them rest</button>
+        <button class="last">Brace for the night</button>
       </div>
     </div>
-
-    <script src="game.js"></script>
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
       import {
@@ -125,17 +100,14 @@
         getDoc,
       } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
-      // TODO: replace with your real Firebase project config
-      // (Project settings -> General -> Your apps -> SDK setup and
-      // configuration, in the Firebase console). The placeholder values
-      // below will not authenticate or save anything.
       const firebaseConfig = {
-        apiKey: "AIzaSy...",
-        authDomain: "zombie-journal.firebaseapp.com",
-        projectId: "zombie-journal",
-        storageBucket: "zombie-journal.appspot.com",
-        messagingSenderId: "123456789",
-        appId: "1:123456789:web:abc123",
+        apiKey: "AIzaSyC_GCbzbhn5yRhnSeC4Lw10MyQNS2Sc0Z4",
+        authDomain: "another-tally.firebaseapp.com",
+        projectId: "another-tally",
+        storageBucket: "another-tally.firebasestorage.app",
+        messagingSenderId: "509507244990",
+        appId: "1:509507244990:web:ce5b50218a96a045c0dfef",
+        measurementId: "G-TTM6RXPDY9",
       };
 
       const app = initializeApp(firebaseConfig);
@@ -182,13 +154,13 @@
       async function loadGameState(uid) {
         const snap = await getDoc(doc(db, "saves", uid));
         if (snap.exists()) {
-          applyGameState(snap.data()); // defined in game.js
+          applyGameState(snap.data()); // you write this: puts data back into your UI
         } else {
-          startNewGame(); // defined in game.js
+          startNewGame(); // you write this: sets default day-1 state
         }
       }
 
-      // Expose so game.js can call these
+      // Expose so your existing game.js can call these
       window.saveGameState = saveGameState;
       window.getCurrentUser = () => auth.currentUser;
     </script>
